@@ -25,12 +25,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Usuario implements UserDetails {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
@@ -65,128 +62,123 @@ public class Usuario implements UserDetails {
         inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles;
-    
 
-	public Usuario() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    // Getters y setters
+    public Long getId() {
+        return id;
+    }
 
-	public Usuario(Long id, String nombre, String apellido, String correoElectronico, String contrasena,
-			LocalDate fechaCreacion, List<Inscripcion> inscripciones, List<Pago> pagos,
-			List<Acreditacion> acreditaciones, List<Resultado> resultados) {
-		super();
-		this.id = id;
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.correoElectronico = correoElectronico;
-		this.contrasena = contrasena;
-		this.fechaCreacion = fechaCreacion;
-		this.inscripciones = inscripciones;
-		this.pagos = pagos;
-		this.acreditaciones = acreditaciones;
-		this.resultados = resultados;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public String getNombre() {
+        return nombre;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-	public String getNombre() {
-		return nombre;
-	}
+    public String getApellido() {
+        return apellido;
+    }
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
 
-	public String getApellido() {
-		return apellido;
-	}
+    public String getCorreoElectronico() {
+        return correoElectronico;
+    }
 
-	public void setApellido(String apellido) {
-		this.apellido = apellido;
-	}
+    public void setCorreoElectronico(String correoElectronico) {
+        this.correoElectronico = correoElectronico;
+    }
 
-	public String getCorreoElectronico() {
-		return correoElectronico;
-	}
+    public String getContrasena() {
+        return contrasena;
+    }
 
-	public void setCorreoElectronico(String correoElectronico) {
-		this.correoElectronico = correoElectronico;
-	}
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
 
-	public String getContrasena() {
-		return contrasena;
-	}
+    public LocalDate getFechaCreacion() {
+        return fechaCreacion;
+    }
 
-	public void setContrasena(String contrasena) {
-		this.contrasena = contrasena;
-	}
+    public void setFechaCreacion(LocalDate fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
 
-	public LocalDate getFechaCreacion() {
-		return fechaCreacion;
-	}
+    public List<Inscripcion> getInscripciones() {
+        return inscripciones;
+    }
 
-	public void setFechaCreacion(LocalDate fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
+    public void setInscripciones(List<Inscripcion> inscripciones) {
+        this.inscripciones = inscripciones;
+    }
 
-	public List<Inscripcion> getInscripciones() {
-		return inscripciones;
-	}
+    public List<Pago> getPagos() {
+        return pagos;
+    }
 
-	public void setInscripciones(List<Inscripcion> inscripciones) {
-		this.inscripciones = inscripciones;
-	}
+    public void setPagos(List<Pago> pagos) {
+        this.pagos = pagos;
+    }
 
-	public List<Pago> getPagos() {
-		return pagos;
-	}
+    public List<Acreditacion> getAcreditaciones() {
+        return acreditaciones;
+    }
 
-	public void setPagos(List<Pago> pagos) {
-		this.pagos = pagos;
-	}
+    public void setAcreditaciones(List<Acreditacion> acreditaciones) {
+        this.acreditaciones = acreditaciones;
+    }
 
-	public List<Acreditacion> getAcreditaciones() {
-		return acreditaciones;
-	}
+    public List<Resultado> getResultados() {
+        return resultados;
+    }
 
-	public void setAcreditaciones(List<Acreditacion> acreditaciones) {
-		this.acreditaciones = acreditaciones;
-	}
+    public void setResultados(List<Resultado> resultados) {
+        this.resultados = resultados;
+    }
 
-	public List<Resultado> getResultados() {
-		return resultados;
-	}
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	public void setResultados(List<Resultado> resultados) {
-		this.resultados = resultados;
-	}
+    @Override
+    public String getPassword() {
+        // TODO Auto-generated method stub
+        return contrasena;
+    }
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public String getUsername() {
+        return correoElectronico;
+    }
 
-	@Override
-	public String getPassword() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-	@Override
-	public String getUsername() {
-	
-		return correoElectronico;
-	}
-    
-    
-    
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
 
