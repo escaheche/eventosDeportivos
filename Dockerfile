@@ -8,7 +8,7 @@ RUN rm -rf /usr/local/tomcat/webapps/*
 COPY target/eventosDeportivos-0.0.1-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
 
 # Expone el puerto en el que correrá la aplicación
-EXPOSE 9090
+EXPOSE 8080
 
 # Inicia Tomcat
 CMD ["catalina.sh", "run"]
