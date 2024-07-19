@@ -3,6 +3,7 @@ package cl.eventos.deportivos.modelos;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,25 +17,31 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Pago {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private BigDecimal monto;
-    private LocalDate fechaPago;
-    private String metodoPago;
-    
-    // Relaciones
-    @ManyToOne
-    @JoinColumn(name = "inscripcion_id")
-    private Inscripcion inscripcion;
-    
-    @ManyToOne
-    @JoinColumn(name = "evento_id")
-    private Evento evento;
-    
-    @ManyToOne
-    @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Column(unique = true)
+	private BigDecimal monto;
+
+	@Column(unique = true)
+	private LocalDate fechaPago;
+
+	@Column(unique = true)
+	private String metodoPago;
+
+	// Relaciones
+	@ManyToOne
+	@JoinColumn(name = "inscripcion_id")
+	private Inscripcion inscripcion;
+
+	@ManyToOne
+	@JoinColumn(name = "evento_id")
+	private Evento evento;
+
+	@ManyToOne
+	@JoinColumn(name = "usuario_id")
+	private Usuario usuario;
 
 	public Long getId() {
 		return id;
@@ -92,9 +99,4 @@ public class Pago {
 		this.usuario = usuario;
 	}
 
-	
-  
-    
-    
 }
-

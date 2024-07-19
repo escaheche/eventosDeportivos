@@ -1,5 +1,6 @@
 package cl.eventos.deportivos.modelos;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,16 +14,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Estadistica {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String tipoEstadistica;
-    private String valor;
-    
-    // Relaciones
-    @ManyToOne
-    @JoinColumn(name = "evento_id")
-    private Evento evento;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Column(unique = true)
+	private String tipoEstadistica;
+
+	@Column(unique = true)
+	private String valor;
+
+	// Relaciones
+	@ManyToOne
+	@JoinColumn(name = "evento_id")
+	private Evento evento;
 
 	public Long getId() {
 		return id;
@@ -55,9 +60,7 @@ public class Estadistica {
 	public void setEvento(Evento evento) {
 		this.evento = evento;
 	}
-    
-    // Getters y Setters
-    
-    
-}
 
+	// Getters y Setters
+
+}

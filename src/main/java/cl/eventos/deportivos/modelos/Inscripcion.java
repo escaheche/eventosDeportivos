@@ -2,6 +2,7 @@ package cl.eventos.deportivos.modelos;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,20 +16,24 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Inscripcion {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private LocalDate fechaInscripcion;
-    private String estado;
-    
-    // Relaciones
-    @ManyToOne
-    @JoinColumn(name = "evento_id")
-    private Evento evento;
-    
-    @ManyToOne
-    @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Column(unique = true)
+	private LocalDate fechaInscripcion;
+
+	@Column(unique = true)
+	private String estado;
+
+	// Relaciones
+	@ManyToOne
+	@JoinColumn(name = "evento_id")
+	private Evento evento;
+
+	@ManyToOne
+	@JoinColumn(name = "usuario_id")
+	private Usuario usuario;
 
 	public Long getId() {
 		return id;
@@ -69,8 +74,7 @@ public class Inscripcion {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-    
-    // Getters y Setters
-    
-    
+
+	// Getters y Setters
+
 }

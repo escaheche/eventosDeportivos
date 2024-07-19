@@ -36,12 +36,16 @@ public class Usuario implements UserDetails {
     
     @Column(unique = true)
     private String nombre;
+    
     @Column(unique = true)
     private String apellido;
+    
     @Column(unique = true)
     private String correoElectronico;
+    
     @Column(unique = true)
     private String contrasena;
+    
     @Column(unique = true)
     private LocalDate fechaCreacion;
     

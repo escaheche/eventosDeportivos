@@ -3,6 +3,7 @@ package cl.eventos.deportivos.modelos;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,38 +19,41 @@ import jakarta.persistence.JoinColumn;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Evento {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String nombre;
-    private LocalDate fecha;
-    private String descripcion;
-    
-    // Relaciones
-    @OneToMany(mappedBy = "evento")
-    private List<Inscripcion> inscripciones;
-    
-    @OneToMany(mappedBy = "evento")
-    private List<Pago> pagos;
-    
-    @OneToMany(mappedBy = "evento")
-    private List<Acreditacion> acreditaciones;
-    
-    @OneToMany(mappedBy = "evento")
-    private List<Resultado> resultados;
-    
-    @OneToMany(mappedBy = "evento")
-    private List<Reporte> reportes;
-    
-    @OneToMany(mappedBy = "evento")
-    private List<Estadistica> estadisticas;
-    
-    @ManyToMany
-    @JoinTable(
-        name = "evento_patrocinador",
-        joinColumns = @JoinColumn(name = "evento_id"),
-        inverseJoinColumns = @JoinColumn(name = "patrocinador_id"))
-    private List<Patrocinador> patrocinadores;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Column(unique = true)
+	private String nombre;
+
+	@Column(unique = true)
+	private LocalDate fecha;
+
+	@Column(unique = true)
+	private String descripcion;
+
+	// Relaciones
+	@OneToMany(mappedBy = "evento")
+	private List<Inscripcion> inscripciones;
+
+	@OneToMany(mappedBy = "evento")
+	private List<Pago> pagos;
+
+	@OneToMany(mappedBy = "evento")
+	private List<Acreditacion> acreditaciones;
+
+	@OneToMany(mappedBy = "evento")
+	private List<Resultado> resultados;
+
+	@OneToMany(mappedBy = "evento")
+	private List<Reporte> reportes;
+
+	@OneToMany(mappedBy = "evento")
+	private List<Estadistica> estadisticas;
+
+	@ManyToMany
+	@JoinTable(name = "evento_patrocinador", joinColumns = @JoinColumn(name = "evento_id"), inverseJoinColumns = @JoinColumn(name = "patrocinador_id"))
+	private List<Patrocinador> patrocinadores;
 
 	public Long getId() {
 		return id;
@@ -139,13 +143,6 @@ public class Evento {
 		this.patrocinadores = patrocinadores;
 	}
 
-	
-    
-    // Getters y Setters
-    
-    
-    
-    
-    
-}
+	// Getters y Setters
 
+}
