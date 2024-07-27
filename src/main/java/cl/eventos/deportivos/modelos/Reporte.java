@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Reporte {
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -61,7 +62,6 @@ public class Reporte {
 		this.evento = evento;
 	}
     
-    // Getters y Setters
-    
+   
 }
 

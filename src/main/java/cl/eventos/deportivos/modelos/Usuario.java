@@ -1,6 +1,7 @@
 package cl.eventos.deportivos.modelos;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -18,6 +19,8 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PostPersist;
+import jakarta.persistence.PrePersist;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -34,6 +37,9 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+	@Column(unique = true)
+    private String rut;
+	
     @Column(unique = true)
     private String nombre;
     
@@ -47,7 +53,10 @@ public class Usuario implements UserDetails {
     private String contrasena;
     
     @Column(unique = true)
-    private LocalDate fechaCreacion;
+    private LocalDateTime fechaCreacion;
+    
+    @Column(unique = true)
+    private LocalDate fechaNacimiento;
     
     // Relaciones
     @OneToMany(mappedBy = "usuario")
@@ -62,6 +71,9 @@ public class Usuario implements UserDetails {
     @OneToMany(mappedBy = "usuario")
     private List<Resultado> resultados;
     
+    @OneToMany(mappedBy = "usuario")
+    private List<MetodoPago> metodosPago;
+    
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "usuario_role",
@@ -70,26 +82,17 @@ public class Usuario implements UserDetails {
     )
     private Set<Role> roles;
     
+ // Métodos
 
-	public Usuario() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    @PrePersist
+    protected void onCreate() {
+        this.fechaCreacion = LocalDateTime.now();
+    }
+    
 
-	public Usuario(Long id, String nombre, String apellido, String correoElectronico, String contrasena,
-			LocalDate fechaCreacion, List<Inscripcion> inscripciones, List<Pago> pagos,
-			List<Acreditacion> acreditaciones, List<Resultado> resultados) {
+	public Usuario(String rut) {
 		super();
-		this.id = id;
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.correoElectronico = correoElectronico;
-		this.contrasena = contrasena;
-		this.fechaCreacion = fechaCreacion;
-		this.inscripciones = inscripciones;
-		this.pagos = pagos;
-		this.acreditaciones = acreditaciones;
-		this.resultados = resultados;
+		this.rut = rut;
 	}
 
 	public Long getId() {
@@ -132,12 +135,40 @@ public class Usuario implements UserDetails {
 		this.contrasena = contrasena;
 	}
 
-	public LocalDate getFechaCreacion() {
+	public LocalDateTime getFechaCreacion() {
 		return fechaCreacion;
 	}
 
-	public void setFechaCreacion(LocalDate fechaCreacion) {
+	public void setFechaCreacion(LocalDateTime fechaCreacion) {
 		this.fechaCreacion = fechaCreacion;
+	}
+
+	public LocalDate getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
+	public void setFechaNacimiento(LocalDate fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	public List<MetodoPago> getMetodosPago() {
+		return metodosPago;
+	}
+
+	public void setMetodosPago(List<MetodoPago> metodosPago) {
+		this.metodosPago = metodosPago;
+	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public List<Inscripcion> getInscripciones() {

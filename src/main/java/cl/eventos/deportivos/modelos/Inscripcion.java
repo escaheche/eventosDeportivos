@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Inscripcion {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -74,7 +75,5 @@ public class Inscripcion {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-
-	// Getters y Setters
 
 }

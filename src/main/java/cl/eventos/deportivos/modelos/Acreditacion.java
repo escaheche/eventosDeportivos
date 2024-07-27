@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Acreditacion {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -72,7 +73,5 @@ public class Acreditacion {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-
-	// Getters y Setters
 
 }

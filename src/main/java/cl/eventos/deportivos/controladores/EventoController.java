@@ -1,20 +1,15 @@
 package cl.eventos.deportivos.controladores;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import cl.eventos.deportivos.modelos.Evento;
 import cl.eventos.deportivos.servicios.EventoService;
+import cl.eventos.deportivos.servicios.GeocodingService;
 
 @RestController
 @RequestMapping("/api/eventos")
@@ -22,6 +17,9 @@ public class EventoController {
 
     @Autowired
     private EventoService eventoService;
+
+    @Autowired
+    private GeocodingService geocodingService;
 
     @GetMapping
     public List<Evento> listarTodos() {
@@ -35,17 +33,27 @@ public class EventoController {
     }
 
     @PostMapping
-    public Evento crear(@RequestBody Evento evento) {
-        return eventoService.guardar(evento);
+    public ResponseEntity<Evento> crear(@RequestBody Evento evento) {
+        Map<String, Double> coordinates = geocodingService.getLatLongFromAddress(evento.getDireccion());
+        evento.setLatitud(coordinates.get("lat"));
+        evento.setLongitud(coordinates.get("lng"));
+        Evento nuevoEvento = eventoService.guardar(evento);
+        return ResponseEntity.ok(nuevoEvento);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Evento> actualizar(@PathVariable Long id, @RequestBody Evento evento) {
-        if (eventoService.obtenerPorId(id) == null) {
+        Evento eventoExistente = eventoService.obtenerPorId(id);
+        if (eventoExistente == null) {
             return ResponseEntity.notFound().build();
         }
+        Map<String, Double> coordinates = geocodingService.getLatLongFromAddress(evento.getDireccion());
+        evento.setLatitud(coordinates.get("lat"));
+        evento.setLongitud(coordinates.get("lng"));
         evento.setId(id);
-        return ResponseEntity.ok(eventoService.guardar(evento));
+        evento.setFechaCreacion(eventoExistente.getFechaCreacion());  // Mantener la fecha de creación original
+        Evento eventoActualizado = eventoService.guardar(evento);
+        return ResponseEntity.ok(eventoActualizado);
     }
 
     @DeleteMapping("/{id}")
@@ -57,3 +65,4 @@ public class EventoController {
         return ResponseEntity.noContent().build();
     }
 }
+

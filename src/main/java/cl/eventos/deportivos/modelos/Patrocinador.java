@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Patrocinador {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -71,7 +72,5 @@ public class Patrocinador {
 	public void setEventos(List<Evento> eventos) {
 		this.eventos = eventos;
 	}
-
-	// Getters y Setters
 
 }

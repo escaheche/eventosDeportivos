@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Estadistica {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -60,7 +61,5 @@ public class Estadistica {
 	public void setEvento(Evento evento) {
 		this.evento = evento;
 	}
-
-	// Getters y Setters
 
 }
