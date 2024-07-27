@@ -1,0 +1,43 @@
+version: '3'
+services:
+  
+  sonarqube:
+    image: sonarqube
+    ports:
+      - "9000:9000"
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+
+  eventos-service:
+    build:
+      context: .
+    container_name: eventos-service
+    ports:
+      - "9090:8080"  # Mapea el puerto 8080 del contenedor al 9090 en el host
+    depends_on:
+      - db
+      - sonarqube
+    environment:
+      SONAR_HOST_URL: http://localhost:9000
+      SONAR_LOGIN: sqb_f5057b641e39f85b29c33633eaf832ab3410b8ba
+      SPRING_DATASOURCE_URL: jdbc:sqlserver://db:1433;databaseName=yourdatabase
+      SPRING_DATASOURCE_USERNAME: sa
+      SPRING_DATASOURCE_PASSWORD: ComplexPass123!
+    volumes:
+      - ./setup-sonarqube.sh:/usr/local/bin/setup-sonarqube.sh
+      - ./private_key.pem:/usr/local/bin/private_key.pem
+    entrypoint: ["/bin/bash", "-c", "/usr/local/bin/setup-sonarqube.sh && catalina.sh run"]
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: ComplexPass123!
+      ACCEPT_EULA: "Y"
+      MSSQL_DATABASE: yourdatabase
+    ports:
+      - "1433:1433"
+      
+volumes:
+  sonarqube_data:
+  sonarqube_extensions:
