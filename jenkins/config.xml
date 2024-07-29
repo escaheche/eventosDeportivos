@@ -1,0 +1,37 @@
+<jenkins>
+  <installStateName>RUNNING</installStateName>
+  <numExecutors>2</numExecutors>
+  <mode>NORMAL</mode>
+  <useSecurity>false</useSecurity>
+  <authorizationStrategy class="hudson.security.FullControlOnceLoggedInAuthorizationStrategy">
+    <denyAnonymousReadAccess>false</denyAnonymousReadAccess>
+  </authorizationStrategy>
+  <securityRealm class="hudson.security.LegacySecurityRealm"/>
+  <views>
+    <all class="hudson.model.AllView">
+      <owner class="jenkins.model.Jenkins" reference="../../.."/>
+      <name>All</name>
+      <filterExecutors>false</filterExecutors>
+      <filterQueue>false</filterQueue>
+      <properties class="hudson.model.View$PropertyList"/>
+    </all>
+  </views>
+  <primaryView>All</primaryView>
+  <slaveAgentPort>50000</slaveAgentPort>
+  <label></label>
+  <nodeProperties/>
+  <globalNodeProperties/>
+  <noUsageStatistics>true</noUsageStatistics>
+  <scmCheckoutRetryCount>0</scmCheckoutRetryCount>
+  <disabledAdministrativeMonitors/>
+  <org.jenkinsci.plugins.sonar.SonarGlobalConfiguration plugin="sonar@2.13.1">
+    <installations>
+      <org.sonarsource.scanner.jenkins.pipeline.SonarQubeInstallation>
+        <name>SonarQube</name>
+        <serverUrl>http://sonarqube:9000</serverUrl>
+        <credentialsId>sonarqube-token</credentialsId>
+        <sonarScannerOptions></sonarScannerOptions>
+      </org.sonarsource.scanner.jenkins.pipeline.SonarQubeInstallation>
+    </installations>
+  </org.jenkinsci.plugins.sonar.SonarGlobalConfiguration>
+</jenkins>

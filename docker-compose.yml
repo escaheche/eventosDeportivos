@@ -1,13 +1,32 @@
 version: '3'
 services:
   
+  jenkins:
+    build: ./jenkins
+    container_name: jenkins-service
+    ports:
+      - "8181:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+    environment:
+      JAVA_OPTS: -Djenkins.install.runSetupWizard=false
+    depends_on:
+      - sonarqube
+      - eventos-service
+      - db
+
   sonarqube:
     image: sonarqube
+    container_name: sonarqube-service
     ports:
       - "9000:9000"
     volumes:
       - sonarqube_data:/opt/sonarqube/data
       - sonarqube_extensions:/opt/sonarqube/extensions
+    environment:
+      - SONARQUBE_CREDENTIALS_USR=admin
+      - SONARQUBE_CREDENTIALS_PSW=root
 
   eventos-service:
     build:
@@ -31,6 +50,7 @@ services:
 
   db:
     image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: eventos-service-db
     environment:
       SA_PASSWORD: ComplexPass123!
       ACCEPT_EULA: "Y"
@@ -39,5 +59,6 @@ services:
       - "1433:1433"
       
 volumes:
+  jenkins_home:
   sonarqube_data:
   sonarqube_extensions:
