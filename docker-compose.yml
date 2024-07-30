@@ -11,6 +11,8 @@ services:
       - jenkins_home:/var/jenkins_home
     environment:
       JAVA_OPTS: -Djenkins.install.runSetupWizard=false
+      SONARQUBE_CREDENTIALS_USR: admin
+      SONARQUBE_CREDENTIALS_PSW: root
     depends_on:
       - sonarqube
       - eventos-service
@@ -21,6 +23,8 @@ services:
     container_name: sonarqube-service
     ports:
       - "9000:9000"
+    depends_on:
+      - db
     volumes:
       - sonarqube_data:/opt/sonarqube/data
       - sonarqube_extensions:/opt/sonarqube/extensions
