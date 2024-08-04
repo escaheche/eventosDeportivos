@@ -1,9 +1,11 @@
 package cl.eventos.deportivos.repositorios;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import cl.eventos.deportivos.modelos.Categoria;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface CategoriaRepository extends JpaRepository<Categoria, Long>{
-
+@Repository
+public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
+	 Categoria findByEdadMinimaLessThanEqualAndEdadMaximaGreaterThanEqualAndDistancia(int edadMinima, int edadMaxima, double distancia);
 }
+

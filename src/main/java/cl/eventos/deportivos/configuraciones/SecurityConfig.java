@@ -23,7 +23,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 	
-	@Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
+	/*@Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
     private String jwkSetUri;
 
 	@Bean
@@ -75,5 +75,34 @@ public class SecurityConfig {
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
-	}
+	}*/
+	
+	
+	
+	
+
+	    @Bean
+	    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	        // Permitir acceso completo a todas las rutas
+	        http
+	            .csrf().disable() // Deshabilitar CSRF si no es necesario
+	            .authorizeHttpRequests()
+	            .anyRequest().permitAll() // Permitir todas las solicitudes sin autenticación
+	            .and()
+	            .logout().permitAll(); // Permitir logout sin restricciones
+
+	        return http.build();
+	    }
+
+	    @Bean
+	    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+	        return authenticationConfiguration.getAuthenticationManager();
+	    }
+
+	    @Bean
+	    public PasswordEncoder passwordEncoder() {
+	        return new BCryptPasswordEncoder();
+	    }
+
+
 }

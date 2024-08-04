@@ -18,8 +18,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.PostPersist;
 import jakarta.persistence.PrePersist;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -28,67 +28,66 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Usuario implements UserDetails {
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-	@Column(unique = true)
-    private String rut;
-	
-    @Column(unique = true)
-    private String nombre;
-    
-    @Column(unique = true)
-    private String apellido;
-    
-    @Column(unique = true)
-    private String correoElectronico;
-    
-    @Column(unique = true)
-    private String contrasena;
-    
-    @Column(unique = true)
-    private LocalDateTime fechaCreacion;
-    
-    @Column(unique = true)
-    private LocalDate fechaNacimiento;
-    
-    // Relaciones
-    @OneToMany(mappedBy = "usuario")
-    private List<Inscripcion> inscripciones;
-    
-    @OneToMany(mappedBy = "usuario")
-    private List<Pago> pagos;
-    
-    @OneToMany(mappedBy = "usuario")
-    private List<Acreditacion> acreditaciones;
-    
-    @OneToMany(mappedBy = "usuario")
-    private List<Resultado> resultados;
-    
-    @OneToMany(mappedBy = "usuario")
-    private List<MetodoPago> metodosPago;
-    
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "usuario_role",
-        joinColumns = @JoinColumn(name = "usuario_id"),
-        inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> roles;
-    
- // Métodos
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @PrePersist
-    protected void onCreate() {
-        this.fechaCreacion = LocalDateTime.now();
-    }
-    
+	@Column(unique = true)
+	private String rut;
+
+	@Column(unique = true)
+	private String nombre;
+
+	@Column(unique = true)
+	private String apellido;
+
+	@Column(unique = true)
+	private String correoElectronico;
+
+	@Column(unique = true)
+	private String contrasena;
+
+	@Column(unique = true)
+	private LocalDateTime fechaCreacion;
+
+	@Column(unique = true)
+	private LocalDate fechaNacimiento;
+
+	// Relaciones
+	@OneToMany(mappedBy = "usuario")
+	private List<Inscripcion> inscripciones;
+
+	@OneToMany(mappedBy = "usuario")
+	private List<Pago> pagos;
+
+	@OneToMany(mappedBy = "usuario")
+	private List<Acreditacion> acreditaciones;
+
+	@OneToMany(mappedBy = "usuario")
+	private List<Resultado> resultados;
+
+	@OneToMany(mappedBy = "usuario")
+	private List<MetodoPago> metodosPago;
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "usuario_role", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles;
+
+	@ManyToOne
+	@JoinColumn(name = "categoria_id")
+	private Categoria categoria;
+
+	// Métodos
+
+	@PrePersist
+	protected void onCreate() {
+		this.fechaCreacion = LocalDateTime.now();
+	}
 
 	public Usuario(String rut) {
 		super();
@@ -217,11 +216,16 @@ public class Usuario implements UserDetails {
 
 	@Override
 	public String getUsername() {
-	
+
 		return correoElectronico;
 	}
-    
-    
-    
-}
 
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+
+}

@@ -75,6 +75,15 @@ public class Evento {
 	@ManyToMany
 	@JoinTable(name = "evento_patrocinador", joinColumns = @JoinColumn(name = "evento_id"), inverseJoinColumns = @JoinColumn(name = "patrocinador_id"))
 	private List<Patrocinador> patrocinadores;
+	
+	@ManyToOne
+	@JoinColumn(name = "tipo_evento_id")
+	private TipoEvento tipoEvento;
+
+	@ManyToOne
+	@JoinColumn(name = "subtipo_evento_id")
+	private SubtipoEvento subtipoEvento;
+
 
 	@PrePersist
 	protected void onCreate() {
@@ -239,4 +248,25 @@ public class Evento {
 	public void setLongitud(Double longitud) {
 		this.longitud = longitud;
 	}
+
+
+	public TipoEvento getTipoEvento() {
+		return tipoEvento;
+	}
+
+
+	public void setTipoEvento(TipoEvento tipoEvento) {
+		this.tipoEvento = tipoEvento;
+	}
+
+
+	public SubtipoEvento getSubtipoEvento() {
+		return subtipoEvento;
+	}
+
+
+	public void setSubtipoEvento(SubtipoEvento subtipoEvento) {
+		this.subtipoEvento = subtipoEvento;
+	}
+	
 }
