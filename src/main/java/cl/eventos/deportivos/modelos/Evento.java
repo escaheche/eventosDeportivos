@@ -28,16 +28,16 @@ public class Evento {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(unique = true)
+
 	private String nombre;
 
-	@Column(unique = true)
+	
 	private LocalDate fecha;
 
-	@Column(unique = true)
+	
 	private String descripcion;
 
-	@Column(updatable = false)
+	
 	private LocalDate fechaCreacion;
 	
 	@Column

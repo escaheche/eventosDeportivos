@@ -22,13 +22,13 @@ public class Pago {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(unique = true)
+	
 	private BigDecimal monto;
 
-	@Column(unique = true)
+	
 	private LocalDate fechaPago;
 
-	@Column(unique = true)
+	
 	private String metodoPago;
 
 	// Relaciones

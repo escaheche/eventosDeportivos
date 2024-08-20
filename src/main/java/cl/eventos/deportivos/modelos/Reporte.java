@@ -19,10 +19,10 @@ public class Reporte {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(unique = true)
+    
     private String tipoReporte;
     
-    @Column(unique = true)
+    
     private String contenido;
     
     // Relaciones

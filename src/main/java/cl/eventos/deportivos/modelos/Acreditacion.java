@@ -19,10 +19,10 @@ public class Acreditacion {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(unique = true)
+	
 	private String tipoAcreditacion;
 
-	@Column(unique = true)
+	
 	private String estado;
 
 	// Relaciones

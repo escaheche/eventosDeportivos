@@ -20,13 +20,13 @@ public class Patrocinador {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(unique = true)
+	
 	private String nombre;
 
-	@Column(unique = true)
+	
 	private String logo;
 
-	@Column(unique = true)
+	
 	private String descripcion;
 
 	// Relaciones

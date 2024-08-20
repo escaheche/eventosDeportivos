@@ -18,10 +18,10 @@ public class Resultado {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(unique = true)
+   
     private Integer posicion;
     
-    @Column(unique = true)
+    
     private Integer puntos;
     
     // Relaciones

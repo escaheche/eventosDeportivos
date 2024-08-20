@@ -21,10 +21,10 @@ public class Inscripcion {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(unique = true)
+	
 	private LocalDate fechaInscripcion;
 
-	@Column(unique = true)
+	
 	private String estado;
 
 	// Relaciones

@@ -4,27 +4,24 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Usuario implements UserDetails {
@@ -40,22 +37,20 @@ public class Usuario implements UserDetails {
 	@Column(unique = true)
 	private String rut;
 
-	@Column(unique = true)
+	
 	private String nombre;
 
-	@Column(unique = true)
+	
 	private String apellido;
 
 	@Column(unique = true)
 	private String correoElectronico;
 
-	@Column(unique = true)
+	
 	private String contrasena;
 
-	@Column(unique = true)
 	private LocalDateTime fechaCreacion;
 
-	@Column(unique = true)
 	private LocalDate fechaNacimiento;
 
 	// Relaciones
@@ -71,28 +66,28 @@ public class Usuario implements UserDetails {
 	@OneToMany(mappedBy = "usuario")
 	private List<Resultado> resultados;
 
-	@OneToMany(mappedBy = "usuario")
-	private List<MetodoPago> metodosPago;
-
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "usuario_role", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<Role> roles;
+	@ManyToOne
+	@JoinColumn(name = "role_id")
+	private Role role;
 
 	@ManyToOne
 	@JoinColumn(name = "categoria_id")
 	private Categoria categoria;
 
-	// Métodos
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
 
 	@PrePersist
 	protected void onCreate() {
 		this.fechaCreacion = LocalDateTime.now();
 	}
 
-	public Usuario(String rut) {
-		super();
-		this.rut = rut;
-	}
+	
 
 	public Long getId() {
 		return id;
@@ -150,20 +145,12 @@ public class Usuario implements UserDetails {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	public List<MetodoPago> getMetodosPago() {
-		return metodosPago;
+	public String getRut() {
+		return rut;
 	}
 
-	public void setMetodosPago(List<MetodoPago> metodosPago) {
-		this.metodosPago = metodosPago;
-	}
-
-	public Set<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
+	public void setRut(String rut) {
+		this.rut = rut;
 	}
 
 	public static long getSerialversionuid() {

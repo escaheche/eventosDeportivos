@@ -40,5 +40,15 @@ public class AuthController {
         response.put("token", token);
         return response;
     }
+
+    @PostMapping("/refreshtoken")
+    public Map<String, Object> refreshToken(@RequestBody Map<String, String> request) {
+        String token = request.get("token");
+        String newToken = jwtUtils.refreshToken(token);
+        Map<String, Object> response = new HashMap<>();
+        response.put("token", newToken);
+        return response;
+    }
 }
+
 
