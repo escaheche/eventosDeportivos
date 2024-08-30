@@ -42,8 +42,27 @@
 			<version>6.1.1.Final</version>
 		</dependency>
 
-		
-		
+		<dependency>
+	    <groupId>org.junit.jupiter</groupId>
+	    <artifactId>junit-jupiter-engine</artifactId>
+	    <version>5.10.3</version>
+	    <scope>test</scope>
+		</dependency>
+
+		  <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>5.10.3</version>
+        <scope>test</scope>
+    </dependency>
+
+    <!-- JUnit Platform Suite API -->
+    <dependency>
+        <groupId>org.junit.platform</groupId>
+        <artifactId>junit-platform-suite-api</artifactId>
+        <version>1.10.3</version>
+        <scope>test</scope>
+    </dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
@@ -101,6 +120,7 @@
 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>mssql-jdbc</artifactId>
+			<version>12.6.3.jre11</version>
 		</dependency>
 		
 		<dependency>

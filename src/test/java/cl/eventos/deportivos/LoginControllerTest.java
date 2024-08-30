@@ -25,73 +25,73 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import cl.eventos.deportivos.componentes.JwtUtils;
 import cl.eventos.deportivos.controladores.LoginController;
 import cl.eventos.deportivos.dto.AuthRequest;
+import cl.eventos.deportivos.modelos.Usuario;
+import cl.eventos.deportivos.modelos.Role;
 
 @SpringBootTest
 public class LoginControllerTest {
-	
-	@Mock
-	private AuthenticationManager authenticationManager;
 
-	@Mock
-	private UserDetailsService userDetailsService;
+    @Mock
+    private AuthenticationManager authenticationManager;
 
-	@Mock
-	private JwtUtils jwtUtils;
+    @Mock
+    private UserDetailsService userDetailsService;
 
-	@Mock
-	private Authentication authentication;
+    @Mock
+    private JwtUtils jwtUtils;
 
-	@Mock
-	private UserDetails userDetails;
+    @Mock
+    private Authentication authentication;
 
-	@Mock
-	private SecurityContext securityContext;
+    @Mock
+    private UserDetails userDetails;
 
-	@InjectMocks
-	private LoginController loginController;
+    @Mock
+    private SecurityContext securityContext;
 
-	@BeforeEach
-	public void setUp() {
-		MockitoAnnotations.openMocks(this);
-	}
+    @InjectMocks
+    private LoginController loginController;
 
-	@Test
-	void contextLoads() {
-		// Este test verifica que el contexto de Spring Boot se carga correctamente
-	}
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
-	@Test
-	void testLogin() {
-		// Arrange
-	    AuthRequest authRequest = new AuthRequest();
-	    authRequest.setUsername("testuser");
-	    authRequest.setPassword("testpass");
+    @Test
+    void testLogin() {
+        // Arrange
+        AuthRequest authRequest = new AuthRequest();
+        authRequest.setUsername("testuser");
+        authRequest.setPassword("testpass");
 
-	    // Simula un UserDetails con el nombre de usuario esperado
-	    UserDetails userDetails = org.springframework.security.core.userdetails.User
-	        .withUsername("testuser")
-	        .password("testpass")
-	        .authorities("ROLE_USER")
-	        .build();
+        // Mock a Usuario object with the necessary details
+        Usuario usuario = new Usuario();
+        usuario.setNombre("Test");
+        usuario.setApellido("User");
+        Role role = new Role();
+        role.setName("ROLE_USER");
+        usuario.setRole(role);
+        usuario.setCorreoElectronico("testuser");
 
-	    when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
-	            .thenReturn(authentication);
-	    when(userDetailsService.loadUserByUsername("testuser")).thenReturn(userDetails);
-	    when(jwtUtils.generateToken("testuser")).thenReturn("mockedToken");
-	    when(securityContext.getAuthentication()).thenReturn(authentication);
-	    SecurityContextHolder.setContext(securityContext);
+        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
+                .thenReturn(authentication);
+        when(userDetailsService.loadUserByUsername("testuser")).thenReturn(usuario);
+        when(jwtUtils.generateToken("testuser", "ROLE_USER", "Test", "User")).thenReturn("mockedToken");
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
 
-	    // Act
-	    Map<String, Object> response = loginController.login(authRequest);
+        // Act
+        Map<String, Object> response = loginController.login(authRequest);
 
-	    // Assert
-	    verify(authenticationManager, times(1))
-	            .authenticate(any(UsernamePasswordAuthenticationToken.class));
-	    verify(userDetailsService, times(1))
-	            .loadUserByUsername("testuser");
-	    verify(jwtUtils, times(1))
-	            .generateToken("testuser");
+        // Assert
+        verify(authenticationManager, times(1))
+                .authenticate(any(UsernamePasswordAuthenticationToken.class));
+        verify(userDetailsService, times(1))
+                .loadUserByUsername("testuser");
+        verify(jwtUtils, times(1))
+                .generateToken("testuser", "ROLE_USER", "Test", "User");
 
-	    assertEquals("mockedToken", response.get("token"));
-	}
+        assertEquals("mockedToken", response.get("token"));
+    }
 }
+

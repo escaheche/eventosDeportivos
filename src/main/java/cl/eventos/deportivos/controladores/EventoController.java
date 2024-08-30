@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import cl.eventos.deportivos.modelos.Evento;
@@ -22,17 +23,20 @@ public class EventoController {
     private GeocodingService geocodingService;
 
     @GetMapping
+    @PreAuthorize("isAuthenticated()")
     public List<Evento> listarTodos() {
         return eventoService.listarTodos();
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Evento> obtenerPorId(@PathVariable Long id) {
         Evento evento = eventoService.obtenerPorId(id);
         return evento != null ? ResponseEntity.ok(evento) : ResponseEntity.notFound().build();
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Evento> crear(@RequestBody Evento evento) {
         Map<String, Double> coordinates = geocodingService.getLatLongFromAddress(evento.getDireccion());
         evento.setLatitud(coordinates.get("lat"));
@@ -42,6 +46,7 @@ public class EventoController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Evento> actualizar(@PathVariable Long id, @RequestBody Evento evento) {
         Evento eventoExistente = eventoService.obtenerPorId(id);
         if (eventoExistente == null) {
@@ -57,6 +62,7 @@ public class EventoController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         if (eventoService.obtenerPorId(id) == null) {
             return ResponseEntity.notFound().build();

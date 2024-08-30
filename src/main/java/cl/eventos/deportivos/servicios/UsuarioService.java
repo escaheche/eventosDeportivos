@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import cl.eventos.deportivos.dto.CustomUserDetails;
 import cl.eventos.deportivos.modelos.Role;
 import cl.eventos.deportivos.modelos.Usuario;
 import cl.eventos.deportivos.repositorios.RoleRepository;
@@ -20,6 +21,7 @@ public class UsuarioService implements UserDetailsService{
 	private final UsuarioRepository usuarioRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    
 
     public UsuarioService(UsuarioRepository usuarioRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
@@ -75,12 +77,11 @@ public class UsuarioService implements UserDetailsService{
         if (usuario == null) {
             throw new UsernameNotFoundException("Usuario no encontrado");
         }
-        return new org.springframework.security.core.userdetails.User(
-            usuario.getCorreoElectronico(), 
-            usuario.getContrasena(), 
-            new ArrayList<>()
-        );
+        return new CustomUserDetails(usuario);
     }
+
+    
+
 
 }
 

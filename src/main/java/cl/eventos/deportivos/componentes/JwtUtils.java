@@ -22,9 +22,12 @@ public class JwtUtils {
         this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
 
-    public String generateToken(String username) {
+    public String generateToken(String username, String role, String nombre, String apellido) {
         return Jwts.builder()
                 .setSubject(username)
+                .claim("role", role)
+                .claim("nombre", nombre)
+                .claim("apellido", apellido)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 día
                 .signWith(key)
@@ -44,6 +47,22 @@ public class JwtUtils {
         Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
         return claims.getSubject();
     }
+
+    public String getRoleFromToken(String token) {
+        Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        return claims.get("role", String.class);
+    }
+
+    public String getNombreFromToken(String token) {
+        Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        return claims.get("nombre", String.class);
+    }
+
+    public String getApellidoFromToken(String token) {
+        Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        return claims.get("apellido", String.class);
+    }
+
     public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
@@ -54,6 +73,6 @@ public class JwtUtils {
 
     public String refreshToken(String token) {
         final Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
-        return generateToken(claims.getSubject());
+        return generateToken(claims.getSubject(), claims.get("role", String.class), claims.get("nombre", String.class), claims.get("apellido", String.class));
     }
 }

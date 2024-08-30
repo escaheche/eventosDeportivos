@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import cl.eventos.deportivos.componentes.JwtUtils;
 import cl.eventos.deportivos.dto.AuthRequest;
+import cl.eventos.deportivos.modelos.Usuario;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,14 +40,26 @@ public class LoginController {
     @PostMapping("/login")
     @ResponseBody
     public Map<String, Object> login(@RequestBody AuthRequest authRequest) {
+        // Autenticar al usuario
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // Cargar los detalles del usuario
         UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
-        String token = jwtUtils.generateToken(userDetails.getUsername());
+        Usuario usuario = (Usuario) userDetails;  // Asumiendo que Usuario implementa UserDetails
+
+        // Generar el token JWT con rol, nombre y apellido
+        String token = jwtUtils.generateToken(usuario.getUsername(), usuario.getRole().getName(), usuario.getNombre(), usuario.getApellido());
+
+        // Crear la respuesta
         Map<String, Object> response = new HashMap<>();
         response.put("token", token);
+        response.put("role", usuario.getRole().getName());
+        response.put("nombre", usuario.getNombre());
+        response.put("apellido", usuario.getApellido());
+
         return response;
     }
 
