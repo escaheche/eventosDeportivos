@@ -36,7 +36,7 @@ public class EventoController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMINISTRADOR')")
+    @PreAuthorize("hasAuthority('Administrador')")
     public ResponseEntity<Evento> crear(@RequestBody Evento evento) {
         Map<String, Double> coordinates = geocodingService.getLatLongFromAddress(evento.getDireccion());
         evento.setLatitud(coordinates.get("lat"));
@@ -46,7 +46,7 @@ public class EventoController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMINISTRADOR')")
+    @PreAuthorize("hasAuthority('Administrador')")
     public ResponseEntity<Evento> actualizar(@PathVariable Long id, @RequestBody Evento evento) {
         Evento eventoExistente = eventoService.obtenerPorId(id);
         if (eventoExistente == null) {
@@ -62,7 +62,7 @@ public class EventoController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMINISTRADOR')")
+    @PreAuthorize("hasAuthority('Administrador')")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         if (eventoService.obtenerPorId(id) == null) {
             return ResponseEntity.notFound().build();
