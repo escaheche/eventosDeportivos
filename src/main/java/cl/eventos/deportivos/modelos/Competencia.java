@@ -1,7 +1,5 @@
 package cl.eventos.deportivos.modelos;
 
-import java.util.List;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +16,8 @@ public class Competencia {
 
    
     private String nombre;
+    
+    private String descripcion; // Distancia de la prueba en kilómetros o metros, según el caso
 
     @ManyToOne
     @JoinColumn(name = "categoria_id")

@@ -1,11 +1,17 @@
 package cl.eventos.deportivos.modelos;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,22 +30,24 @@ public class Categoria {
 
     private int edadMinima;
     private int edadMaxima;
-    private double distancia; // Distancia de la prueba en kilómetros o metros, según el caso
+   
+ // Relación many-to-many con SubtipoEvento
+    @ManyToMany
+    @JoinTable(
+        name = "categoria_subtipo_evento", // Nombre de la tabla intermedia
+        joinColumns = @JoinColumn(name = "categoria_id"), // Columna para la categoría
+        inverseJoinColumns = @JoinColumn(name = "subtipo_evento_id") // Columna para el subtipo de evento
+    )
+    @JsonIgnore  // Evitar recursión infinita
+    private List<SubtipoEvento> subtiposEventos;// Un atributo que indica los subtipos de eventos asociados
+
     
-    @ManyToOne
-    private SubtipoEvento subtipoEvento; 
     
 	public Long getId() {
 		return id;
 	}
 
-	public SubtipoEvento getSubtipoEvento() {
-		return subtipoEvento;
-	}
-
-	public void setSubtipoEvento(SubtipoEvento subtipoEvento) {
-		this.subtipoEvento = subtipoEvento;
-	}
+	
 
 	public void setId(Long id) {
 		this.id = id;
@@ -62,14 +70,17 @@ public class Categoria {
 	public void setEdadMaxima(int edadMaxima) {
 		this.edadMaxima = edadMaxima;
 	}
-	public double getDistancia() {
-		return distancia;
-	}
-	public void setDistancia(double distancia) {
-		this.distancia = distancia;
-	}
-    
-    
+
+
+	 public List<SubtipoEvento> getSubtiposEventos() {
+	        return subtiposEventos;
+	    }
+
+	    public void setSubtiposEventos(List<SubtipoEvento> subtiposEventos) {
+	        this.subtiposEventos = subtiposEventos;
+	    }
+
+	   
     
 }
 

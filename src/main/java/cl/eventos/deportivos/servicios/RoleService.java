@@ -36,4 +36,10 @@ public class RoleService {
         Role rol = obtenerRolPorId(id);
         roleRepository.delete(rol);
     }
+    
+    // Nuevo método para obtener el rol por nombre
+    public Role obtenerRolPorNombre(String nombre) {
+        return roleRepository.findByName(nombre)
+                .orElseThrow(() -> new RuntimeException("Rol no encontrado con el nombre: " + nombre));
+    }
 }

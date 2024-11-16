@@ -1,6 +1,7 @@
 package cl.eventos.deportivos;
 
 import cl.eventos.deportivos.controladores.UsuarioController;
+import cl.eventos.deportivos.dto.UsuarioDTO;
 import cl.eventos.deportivos.modelos.Usuario;
 import cl.eventos.deportivos.servicios.UsuarioService;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,7 +51,7 @@ public class UsuarioControllerTest {
 	    void testObtenerTodosLosUsuarios() {
 	        when(usuarioService.obtenerTodosLosUsuarios()).thenReturn(Arrays.asList(usuario));
 
-	        ResponseEntity<List<Usuario>> response = usuarioController.obtenerTodosLosUsuarios();
+	        ResponseEntity<List<UsuarioDTO>> response = usuarioController.obtenerTodosLosUsuarios();
 
 	        assertEquals(HttpStatus.OK, response.getStatusCode());
 	        assertEquals(1, response.getBody().size());

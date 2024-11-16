@@ -29,6 +29,10 @@ public class UsuarioService implements UserDetailsService{
         this.passwordEncoder = passwordEncoder;
     }
 
+    public Usuario guardarUsuario(Usuario usuario) {
+        return usuarioRepository.save(usuario); // Guarda el usuario en la base de datos
+    }
+    
     public Usuario crearUsuario(Usuario usuario, Long roleId) {
         // Buscar el rol por ID y asignarlo al usuario
         Role role = roleRepository.findById(roleId)
@@ -50,6 +54,11 @@ public class UsuarioService implements UserDetailsService{
     public List<Usuario> obtenerTodosLosUsuarios() {
         return usuarioRepository.findAll();
     }
+    public Usuario obtenerPorCorreoElectronico(String correoElectronico) {
+        return usuarioRepository.findByCorreoElectronico(correoElectronico)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con correo: " + correoElectronico));
+    }
+
 
     // Eliminar un usuario por ID
     public void eliminarUsuario(Long id) {
@@ -73,11 +82,15 @@ public class UsuarioService implements UserDetailsService{
     
     @Override
     public UserDetails loadUserByUsername(String correoElectronico) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository.findByCorreoElectronico(correoElectronico);
-        if (usuario == null) {
-            throw new UsernameNotFoundException("Usuario no encontrado");
-        }
+        // Usar Optional para manejar la posibilidad de que no se encuentre un usuario
+        Usuario usuario = usuarioRepository.findByCorreoElectronico(correoElectronico)
+            .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con correo: " + correoElectronico));
+
         return new CustomUserDetails(usuario);
+    }
+
+    public boolean existeCorreo(String correoElectronico) {
+        return usuarioRepository.findByCorreoElectronico(correoElectronico).isPresent();
     }
 
     

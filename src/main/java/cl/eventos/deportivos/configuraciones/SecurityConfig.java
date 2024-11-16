@@ -40,9 +40,11 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(withDefaults())
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/api/usuarios/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/eventos/**").permitAll()   // Permite sin autenticación para eventos
                         .requestMatchers("/api/roles/**").hasAuthority("Administrador")
+                        .requestMatchers("/api/usuarios/**").hasAuthority("Administrador")
+                        .requestMatchers("/api/categorias/**").hasAuthority("Administrador")
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

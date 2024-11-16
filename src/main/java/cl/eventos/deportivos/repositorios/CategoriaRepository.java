@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
-	 Categoria findByEdadMinimaLessThanEqualAndEdadMaximaGreaterThanEqualAndDistancia(int edadMinima, int edadMaxima, double distancia);
+	 Categoria findByEdadMinimaLessThanEqualAndEdadMaximaGreaterThanEqual(int edadMinima, int edadMaxima);
 }
 
