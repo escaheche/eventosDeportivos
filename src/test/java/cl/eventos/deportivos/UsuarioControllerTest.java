@@ -2,6 +2,7 @@ package cl.eventos.deportivos;
 
 import cl.eventos.deportivos.controladores.UsuarioController;
 import cl.eventos.deportivos.dto.UsuarioDTO;
+import cl.eventos.deportivos.modelos.Role;
 import cl.eventos.deportivos.modelos.Usuario;
 import cl.eventos.deportivos.servicios.UsuarioService;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,6 +46,12 @@ public class UsuarioControllerTest {
 	        usuario.setContrasena("password123");
 	        usuario.setRut("12345678-9");
 	        usuario.setFechaNacimiento(LocalDate.of(1990, 1, 1));
+	        
+	     // Inicializar el Role
+	        Role role = new Role();
+	        role.setId(1L);
+	        role.setName("Admin");
+	        usuario.setRole(role);
 	    }
 
 	    @Test
@@ -55,6 +62,8 @@ public class UsuarioControllerTest {
 
 	        assertEquals(HttpStatus.OK, response.getStatusCode());
 	        assertEquals(1, response.getBody().size());
+	        assertEquals("Juan", response.getBody().get(0).getNombre());
+	        assertEquals("Admin", response.getBody().get(0).getRol());
 	        verify(usuarioService, times(1)).obtenerTodosLosUsuarios();
 	    }
 
